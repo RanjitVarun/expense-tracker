@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('prod', {
+  return sequelize.define('category', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -9,18 +9,10 @@ module.exports = function(sequelize, DataTypes) {
       autoIncrement: true
     },
     name: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(255),
       allowNull: false
-    },
-    cat_id: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-      references: {
-        model: 'cat',
-        key: 'id'
-      }
     }
   }, {
-    tableName: 'prod'
+    tableName: 'category'
   });
 };

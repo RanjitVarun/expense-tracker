@@ -8,9 +8,9 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
-    role: {
-      type: DataTypes.STRING(100),
-      allowNull: true
+    name: {
+      type: DataTypes.STRING(255),
+      allowNull: false
     }
   }, {
     tableName: 'role'
