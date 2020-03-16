@@ -1,8 +1,8 @@
 var user = require('./userDetailsRoute');
 var dept = require('./deptRoute')
+var catg = require('./catgRoute')
 
-
-module.exports = [].concat(user,dept);
+module.exports = [].concat(user,dept,catg);
 
 
 

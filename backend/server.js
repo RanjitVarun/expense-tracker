@@ -6,23 +6,6 @@ const server = Hapi.server({
   port: 4000
 })
 
-// //This function will allow us to easily extend it later
-// const main = async () => {
-//   await Routes(server)
-//   await server.start()
-
-//   return server
-// }
-
-// main().then(server => {
-//   console.log('Server running at:', server.info.uri)
-// }).catch(err => {
-//   console.log(err)
-//   process.exit(1)
-// })
-
-
-
 
 server.start()
 

@@ -1,14 +1,14 @@
 
 const { sequelize } = require('./db')
-var department=sequelize.import('../models/department')
+var category=sequelize.import('../models/category')
 
 
-getDeptDetails = {
+getCategoryDetails = {
     handler: async () => {
         var result = [];
-        await department.sequelize.sync().then(async function () {
+        await category.sequelize.sync().then(async function () {
 
-            await department.findAll({}).then((res) => {
+            await category.findAll({}).then((res) => {
                 console.log(res);
                 res.map((a) => {
                     result.push(a.dataValues)
@@ -21,11 +21,11 @@ getDeptDetails = {
 }
 
 
-createDept = {
+createCategory = {
     handler: async (request, reply) => {
         var result;
-        await department.sequelize.sync().then(async function () {
-            await department.create({ name: request.payload.name}).then((res) => {
+        await category.sequelize.sync().then(async function () {
+            await category.create({ name: request.payload.name}).then((res) => {
                 console.log(res)
                 result = { statusCode: 200 }
 
@@ -38,12 +38,12 @@ createDept = {
     }
 }
 
-deleteDept = {
+deleteCategory = {
     handler: async (request, reply) => {
         var result;
         console.log(request.payload.name)
-        await department.sequelize.sync().then(async function () {
-            await department.destroy({ where: { name: request.payload.name } }).then((res) => {
+        await category.sequelize.sync().then(async function () {
+            await category.destroy({ where: { name: request.payload.name } }).then((res) => {
                 console.log(res)
                 result = { statusCode: 200 }
 
@@ -59,7 +59,7 @@ deleteDept = {
 
 
 module.exports = {
-    getDeptDetails,
-    createDept,
-    deleteDept
+    getCategoryDetails,
+    createCategory,
+    deleteCategory
 }
