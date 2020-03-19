@@ -7,15 +7,12 @@ const server = Hapi.server({
 })
 
 
-server.start()
-
-.then(()=>{
+server.start().then(()=>{
     console.log(`Server running on port 4000`);
 })
 .catch(err=>{
     console.log(err);
 })
 server.route(Routes)
-
 
 module.exports=server;

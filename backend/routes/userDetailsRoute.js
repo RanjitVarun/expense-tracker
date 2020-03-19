@@ -1,52 +1,88 @@
-//const {sequelize}=require('./model')
-//var user_details=sequelize.import('./models/user_details')
-//var category=sequelize.import('./models/category')
-var userDetailsController=require('../controller/useDetailsController')
-module.exports=[
-  // server.route accepts an object or an array
+const { sequelize } = require('../controller/db')
+var user_details = sequelize.import('../models/user_details')
+var userDetailsController = require('../controller/useDetailsController')
+var verifyToken = require('../schemas/verifyToken');
+var createToken = require('../utils/token')
+module.exports = [
 
-      //{
-//     method: 'GET',
-//     path: '/category',
-//     handler: async() => {
-//         var result=[];
-//   await  category.sequelize.sync().then(async function() {
-   
-//     console.log('hello')
-//     await category.findAll({}).then((res)=>{
-//          res.map((a)=>{
-//              result.push(a.dataValues)
-//          })
-//     })
-// })
+    {
+        method: 'GET',
+        path: '/userdetails',
+        config: {
+            pre: [{ method: verifyToken, assign: 'tokenresult' }],
+            handler: userDetailsController.getUserDetails.handler
+        }
+    },
 
-// return result; 
-//     }
-//   },
-  {
-    method: 'GET',
-    path: '/userdetails', 
-    config:userDetailsController.getUserDetails
+    {
+        method: 'GET',
+        path: '/userdetails/{id}',
+        config: {
+            pre: [{ method: verifyToken, assign: 'tokenresult' }],
+        handler: userDetailsController.getUserDetailsById.handler
+    }
 },
-{
-    method: 'GET',
-    path: '/userdetails/{id}', 
-    config:userDetailsController.getUserDetailsById
-}
-,
-{
-    method: 'POST',
-    path: '/userdetails/create', 
-    config:userDetailsController.createUser
-}
-,
-{
-    method: 'DELETE',
-    path: '/userdetails/delete', 
-    config:userDetailsController.deleteUser
-}
+
+    {
+        method: 'POST',
+        path: '/userdetails/create',
+        config: userDetailsController.createUser
+    },
+
+    {
+        method: 'DELETE',
+        path: '/userdetails/delete',
+        config: userDetailsController.deleteUser
+    },
+    {
+        method: 'POST',
+        path: '/login',
+
+
+        config: {
+            pre: [{ method: verifyToken }],
+
+            handler: async (request, reply) => {
+                var result = { tokenId: '' };
+                var user = {
+                    name: '',
+                    password: '',
+                    email: ''
+
+                }
+                // console.log('herer')
+                //console.log(request.pre)
+                await user_details.sequelize.sync().then(async function () {
+
+
+                    await user_details.findOne({ where: { name: request.payload.name, password: request.payload.password } }).then((res) => {
+
+                        user.name = res.dataValues.name;
+                        user.password = res.dataValues.password;
+                        user.email = res.dataValues.email;
+
+                        console.log(user)
+
+
+                        result.tokenId = createToken(user);
+
+                    })
+
+
+                })
+
+
+                return result
+            }
+        }
+    }
+
+
 
 ]
+
+
+
 
 
 
